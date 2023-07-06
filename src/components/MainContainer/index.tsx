@@ -1,9 +1,12 @@
 import React from 'react';
-
-import * as Styles from './styles';
+import { Center } from 'native-base';
 
 const MainContainer: IComponentWithChildren = ({ children }) => {
-	return <Styles.Container>{children}</Styles.Container>;
+	return (
+		<Center flex={1} bg='gray.700'>
+			{children}
+		</Center>
+	);
 };
 
 export default MainContainer;
