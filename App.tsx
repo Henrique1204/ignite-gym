@@ -4,9 +4,9 @@ import { ThemeProvider } from 'styled-components/native';
 
 import {
 	useFonts,
-	Nunito_400Regular,
-	Nunito_700Bold,
-} from '@expo-google-fonts/nunito';
+	Roboto_400Regular,
+	Roboto_700Bold,
+} from '@expo-google-fonts/roboto';
 
 import { theme } from '@assets/theme/index';
 
@@ -16,8 +16,8 @@ import { Loader } from '@components/index';
 
 const App: React.FC = () => {
 	const [fontsLoaded] = useFonts({
-		Nunito_400Regular,
-		Nunito_700Bold,
+		Roboto_400Regular,
+		Roboto_700Bold,
 	});
 
 	return (
