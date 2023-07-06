@@ -1,6 +1,5 @@
 import React from 'react';
-
-import * as Styles from './styles';
+import { Center, Spinner } from 'native-base';
 
 interface ILoaderProps {
 	loading: boolean;
@@ -14,9 +13,9 @@ const Loader: IComponentWithChildren<ILoaderProps> = ({
 	if (!loading) return <>{children}</>;
 
 	return (
-		<Styles.Container {...props}>
-			<Styles.Loading />
-		</Styles.Container>
+		<Center flex={1} {...props}>
+			<Spinner />
+		</Center>
 	);
 };
 
