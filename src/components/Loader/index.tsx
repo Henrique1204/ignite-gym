@@ -13,8 +13,8 @@ const Loader: IComponentWithChildren<ILoaderProps> = ({
 	if (!loading) return <>{children}</>;
 
 	return (
-		<Center flex={1} {...props}>
-			<Spinner />
+		<Center flex={1} bg='gray.700' {...props}>
+			<Spinner color='green.500' />
 		</Center>
 	);
 };

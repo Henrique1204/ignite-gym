@@ -8,7 +8,7 @@ import {
 	Roboto_700Bold,
 } from '@expo-google-fonts/roboto';
 
-import { theme } from '@assets/theme/index';
+import { THEME } from '@assets/theme/index';
 
 import Routes from './src/routes';
 
@@ -21,7 +21,7 @@ const App: React.FC = () => {
 	});
 
 	return (
-		<NativeBaseProvider>
+		<NativeBaseProvider theme={THEME}>
 			<StatusBar
 				barStyle='dark-content'
 				backgroundColor='transparent'

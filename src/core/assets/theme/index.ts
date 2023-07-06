@@ -1,35 +1,46 @@
+import { extendTheme } from 'native-base';
+
 export const colors = {
+	green: {
+		700: '#00875F',
+		500: '#00B37E',
+	},
+	gray: {
+		700: '#121214',
+		600: '#202024',
+		500: '#29292E',
+		400: '#323238',
+		300: '#7C7C8A',
+		200: '#C4C4CC',
+		100: '#E1E1E6',
+	},
 	white: '#FFFFFF',
-
-	green_400: '#E5F0DB',
-	green_500: '#CBE4B4',
-	green_700: '#639339',
-
-	red_400: '#F4E6E7',
-	red_500: '#F3BABD',
-	red_700: '#BF3B44',
-
-	gray_700: '#1B1D1E',
-	gray_600: '#333638',
-	gray_500: '#5C6265',
-	gray_400: '#B9BBBC',
-	gray_300: '#DDDEDF',
-	gray_200: '#FAFAFA',
+	red: {
+		500: '#F75A68',
+	},
 };
 
-export const fontFamily = {};
+export const fontFamily = {
+	heading: 'Roboto_700Bold',
+	body: 'Roboto_400Regular',
+};
 
 export const fontSize = {
-	sm: '12px',
-	md1: '14px',
-	md2: '16px',
-	lg: '18px',
-	xl1: '24px',
-	xl2: '32px',
+	xs: 12,
+	sm: 14,
+	md: 16,
+	lg: 18,
+	xl: 20,
 };
 
-export const theme = {
+export const sizes = {
+	14: 56,
+	33: 148,
+};
+
+export const THEME = extendTheme({
 	colors,
 	fontFamily,
 	fontSize,
-};
+	sizes,
+});
