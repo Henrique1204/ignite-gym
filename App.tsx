@@ -1,6 +1,6 @@
 import React from 'react';
 import { StatusBar } from 'react-native';
-import { ThemeProvider } from 'styled-components/native';
+import { NativeBaseProvider } from 'native-base';
 
 import {
 	useFonts,
@@ -21,7 +21,7 @@ const App: React.FC = () => {
 	});
 
 	return (
-		<ThemeProvider theme={theme}>
+		<NativeBaseProvider>
 			<StatusBar
 				barStyle='dark-content'
 				backgroundColor='transparent'
@@ -35,7 +35,7 @@ const App: React.FC = () => {
 			>
 				<Routes />
 			</Loader>
-		</ThemeProvider>
+		</NativeBaseProvider>
 	);
 };
 
