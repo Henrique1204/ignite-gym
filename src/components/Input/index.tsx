@@ -14,6 +14,11 @@ const Input: React.FC<IInputProps> = (props) => {
 			color='white'
 			bg='gray.700'
 			placeholderTextColor='gray.300'
+			_focus={{
+				bg: 'gray.700',
+				borderWidth: 1,
+				borderColor: 'green.500',
+			}}
 			{...props}
 		/>
 	);
