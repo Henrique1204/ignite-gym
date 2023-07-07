@@ -35,6 +35,8 @@ const SignIn: React.FC = () => {
 			<Input placeholder='Senha' secureTextEntry />
 
 			<Button title='Acessar' />
+
+			<Button title='Criar conta' variant='outline' />
 		</VStack>
 	);
 };
