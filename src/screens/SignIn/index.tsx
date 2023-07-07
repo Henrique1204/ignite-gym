@@ -1,5 +1,5 @@
 import React from 'react';
-import { VStack, Image, Center, Heading } from 'native-base';
+import { ScrollView, VStack, Image, Center, Text, Heading } from 'native-base';
 
 import LogoSvg from '@icons/logo.svg';
 import BackgroundImage from '@images/background.png';
@@ -8,36 +8,54 @@ import { Button, Input } from '@components/index';
 
 const SignIn: React.FC = () => {
 	return (
-		<VStack flex={1} bg='gray.700' px={10}>
-			<Image
-				source={BackgroundImage}
-				alt='Pessoas se exercitando.'
-				resizeMode='contain'
-				position='absolute'
-			/>
+		<ScrollView
+			contentContainerStyle={{ flexGrow: 1 }}
+			showsVerticalScrollIndicator={false}
+			bg='gray.700'
+		>
+			<VStack flex={1} bg='gray.700' px={10} pb={16}>
+				<Image
+					source={BackgroundImage}
+					alt='Pessoas se exercitando.'
+					resizeMode='contain'
+					position='absolute'
+				/>
 
-			<Center my={24}>
-				<LogoSvg />
-			</Center>
+				<Center my={24}>
+					<LogoSvg />
 
-			<Center>
-				<Heading color='gray.100' fontSize='xl' mb={6} fontFamily='heading'>
-					Treine sua mente e o seu corpo
-				</Heading>
-			</Center>
+					<Text color='gray.100' fontSize='md'>
+						Treine sua mente e o seu corpo
+					</Text>
+				</Center>
 
-			<Input
-				placeholder='E-mail'
-				keyboardType='email-address'
-				autoCapitalize='none'
-			/>
+				<Center>
+					<Heading color='gray.100' fontSize='xl' mb={6} fontFamily='heading'>
+						Acesse sua conta
+					</Heading>
+				</Center>
 
-			<Input placeholder='Senha' secureTextEntry />
+				<Center>
+					<Input
+						placeholder='E-mail'
+						keyboardType='email-address'
+						autoCapitalize='none'
+					/>
 
-			<Button title='Acessar' />
+					<Input placeholder='Senha' secureTextEntry />
 
-			<Button title='Criar conta' variant='outline' />
-		</VStack>
+					<Button title='Acessar' />
+				</Center>
+
+				<Center mt={24}>
+					<Text color='gray.100' fontSize='sm' mb={3} fontFamily='body'>
+						Ainda não tem acesso?
+					</Text>
+
+					<Button title='Criar conta' variant='outline' />
+				</Center>
+			</VStack>
+		</ScrollView>
 	);
 };
 
