@@ -4,7 +4,7 @@ import { VStack, Image, Center, Heading } from 'native-base';
 import LogoSvg from '@icons/logo.svg';
 import BackgroundImage from '@images/background.png';
 
-import { Input } from '@components/index';
+import { Button, Input } from '@components/index';
 
 const SignIn: React.FC = () => {
 	return (
@@ -33,6 +33,8 @@ const SignIn: React.FC = () => {
 			/>
 
 			<Input placeholder='Senha' secureTextEntry />
+
+			<Button title='Acessar' />
 		</VStack>
 	);
 };

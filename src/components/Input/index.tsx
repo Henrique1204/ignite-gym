@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Input as NativeBaseInput, IInputProps } from 'native-base';
 
-const Input: React.FC<IInputProps> = (props) => {
+const Input: IComponent<IInputProps> = (props) => {
 	return (
 		<NativeBaseInput
 			h={14}
