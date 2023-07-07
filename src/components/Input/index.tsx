@@ -1,0 +1,22 @@
+import React from 'react';
+
+import { Input as NativeBaseInput, IInputProps } from 'native-base';
+
+const Input: React.FC<IInputProps> = (props) => {
+	return (
+		<NativeBaseInput
+			h={14}
+			px={4}
+			borderWidth={0}
+			mb={4}
+			fontSize='md'
+			fontFamily='body'
+			color='white'
+			bg='gray.700'
+			placeholderTextColor='gray.300'
+			{...props}
+		/>
+	);
+};
+
+export default Input;

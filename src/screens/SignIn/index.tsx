@@ -2,8 +2,9 @@ import React from 'react';
 import { VStack, Image, Center, Heading } from 'native-base';
 
 import LogoSvg from '@icons/logo.svg';
-
 import BackgroundImage from '@images/background.png';
+
+import { Input } from '@components/index';
 
 const SignIn: React.FC = () => {
 	return (
@@ -24,6 +25,9 @@ const SignIn: React.FC = () => {
 					Treine sua mente e o seu corpo
 				</Heading>
 			</Center>
+
+			<Input placeholder='E-mail' />
+			<Input placeholder='Senha' />
 		</VStack>
 	);
 };
