@@ -1,12 +1,19 @@
 import React from 'react';
 import { ScrollView, VStack, Image, Center, Text, Heading } from 'native-base';
+import { useNavigation } from '@react-navigation/native';
+
+import { IAuthNavigatorRoutesProps } from '@routes/auth.routes';
+
+import { Button, Input } from '@components/index';
 
 import LogoSvg from '@icons/logo.svg';
 import BackgroundImage from '@images/background.png';
 
-import { Button, Input } from '@components/index';
-
 const SignIn: React.FC = () => {
+	const { navigate } = useNavigation<IAuthNavigatorRoutesProps>();
+
+	const goToSignUp = () => navigate('signUp');
+
 	return (
 		<ScrollView
 			contentContainerStyle={{ flexGrow: 1 }}
@@ -15,6 +22,7 @@ const SignIn: React.FC = () => {
 			<VStack flex={1} px={10} pb={16}>
 				<Image
 					source={BackgroundImage}
+					defaultSource={BackgroundImage}
 					alt='Pessoas se exercitando.'
 					resizeMode='contain'
 					position='absolute'
@@ -51,7 +59,7 @@ const SignIn: React.FC = () => {
 						Ainda não tem acesso?
 					</Text>
 
-					<Button title='Criar conta' variant='outline' />
+					<Button title='Criar conta' variant='outline' onPress={goToSignUp} />
 				</Center>
 			</VStack>
 		</ScrollView>

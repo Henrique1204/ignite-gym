@@ -7,14 +7,14 @@ import {
 
 import { SignIn, SignUp } from '@screens/index';
 
-type AuthRoutes = {
+type IAuthRoutes = {
 	signIn: undefined;
 	signUp: undefined;
 };
 
-export type AuthNavigatorRoutesProps = NativeStackNavigationProp<AuthRoutes>;
+export type IAuthNavigatorRoutesProps = NativeStackNavigationProp<IAuthRoutes>;
 
-const { Navigator, Screen } = createNativeStackNavigator<AuthRoutes>();
+const { Navigator, Screen } = createNativeStackNavigator<IAuthRoutes>();
 
 const AuthRoutes: React.FC = () => {
 	return (
