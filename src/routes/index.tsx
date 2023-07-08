@@ -1,14 +1,23 @@
 import React from 'react';
 
-import { NavigationContainer } from '@react-navigation/native';
+import { Box, useTheme } from 'native-base';
+import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 
-import AppRoutes from './app.routes';
+import AuthRoutes from './auth.routes';
 
 const Routes: React.FC = () => {
+	const { colors } = useTheme();
+
+	const theme = DefaultTheme;
+
+	theme.colors.background = colors.gray[700];
+
 	return (
-		<NavigationContainer>
-			<AppRoutes />
-		</NavigationContainer>
+		<Box bg='gray.700' flex={1}>
+			<NavigationContainer theme={theme}>
+				<AuthRoutes />
+			</NavigationContainer>
+		</Box>
 	);
 };
 

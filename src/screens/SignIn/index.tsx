@@ -11,9 +11,8 @@ const SignIn: React.FC = () => {
 		<ScrollView
 			contentContainerStyle={{ flexGrow: 1 }}
 			showsVerticalScrollIndicator={false}
-			bg='gray.700'
 		>
-			<VStack flex={1} bg='gray.700' px={10} pb={16}>
+			<VStack flex={1} px={10} pb={16}>
 				<Image
 					source={BackgroundImage}
 					alt='Pessoas se exercitando.'
