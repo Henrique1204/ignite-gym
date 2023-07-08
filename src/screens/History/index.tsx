@@ -3,12 +3,12 @@ import { Text } from 'native-base';
 
 import { MainContainer } from '@components/index';
 
-const Home: React.FC = () => {
+const History: React.FC = () => {
 	return (
 		<MainContainer>
-			<Text color='white'>Home</Text>
+			<Text color='white'>History</Text>
 		</MainContainer>
 	);
 };
 
-export default Home;
+export default History;

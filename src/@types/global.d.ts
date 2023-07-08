@@ -42,14 +42,4 @@ declare global {
 	export interface ISuccessRouteParams {
 		insideDiet: boolean;
 	}
-
-	namespace ReactNavigation {
-		interface RootParamList {
-			home: undefined;
-			mealDetails: IMealEntity;
-			mealForm?: IMealEntity;
-			statistic: IStatisticRouteParams;
-			success: ISuccessRouteParams;
-		}
-	}
 }
