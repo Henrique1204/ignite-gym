@@ -1,13 +1,13 @@
 import React from 'react';
-import { Text } from 'native-base';
 
-import { MainContainer } from '@components/index';
+import { VStack } from 'native-base';
+import HomeHeader from '@components/HomeHeader';
 
 const Home: React.FC = () => {
 	return (
-		<MainContainer>
-			<Text color='white'>Home</Text>
-		</MainContainer>
+		<VStack>
+			<HomeHeader />
+		</VStack>
 	);
 };
 
