@@ -4,9 +4,10 @@ import { Text, Pressable, IPressableProps } from 'native-base';
 
 interface IGroupProps extends IPressableProps {
 	name: string;
+	isActive: boolean;
 }
 
-const Group: IComponent<IGroupProps> = ({ name, ...props }) => {
+const Group: IComponent<IGroupProps> = ({ name, isActive, ...props }) => {
 	return (
 		<Pressable
 			mr={3}
@@ -17,6 +18,7 @@ const Group: IComponent<IGroupProps> = ({ name, ...props }) => {
 			justifyContent='center'
 			alignItems='center'
 			overflow='hidden'
+			isPressed={isActive}
 			_pressed={{
 				borderColor: 'green.500',
 				borderWidth: 1,
@@ -24,7 +26,7 @@ const Group: IComponent<IGroupProps> = ({ name, ...props }) => {
 			{...props}
 		>
 			<Text
-				color='gray.200'
+				color={isActive ? 'green.500' : 'gray.200'}
 				textTransform='uppercase'
 				fontSize='xs'
 				fontWeight='bold'
