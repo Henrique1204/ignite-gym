@@ -1,13 +1,14 @@
 import React from 'react';
-import { Text } from 'native-base';
 
-import { MainContainer } from '@components/index';
+import { VStack } from 'native-base';
+
+import { ScreenHeader } from '@components/index';
 
 const History: React.FC = () => {
 	return (
-		<MainContainer>
-			<Text color='white'>History</Text>
-		</MainContainer>
+		<VStack>
+			<ScreenHeader title='Histórico de Exercícios' />
+		</VStack>
 	);
 };
 
