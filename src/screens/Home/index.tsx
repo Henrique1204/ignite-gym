@@ -2,7 +2,7 @@ import React from 'react';
 
 import { FlatList, Heading, HStack, Text, VStack } from 'native-base';
 
-import { Group, HomeHeader } from '@components/index';
+import { ExerciseCard, Group, HomeHeader } from '@components/index';
 
 const GROUPS = ['costas', 'bíceps', 'tríceps', 'ombro'];
 
@@ -44,6 +44,8 @@ const Home: React.FC = () => {
 						4
 					</Text>
 				</HStack>
+
+				<ExerciseCard />
 			</VStack>
 		</VStack>
 	);
