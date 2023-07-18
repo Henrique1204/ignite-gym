@@ -6,8 +6,16 @@ import { ExerciseCard, Group, HomeHeader } from '@components/index';
 
 const GROUPS = ['costas', 'bíceps', 'tríceps', 'ombro'];
 
+const EXERCISES: string[] = [
+	'Remada unilateral',
+	'Rosca',
+	'Rosca invertida',
+	'Leg Press',
+];
+
 const Home: React.FC = () => {
 	const [groups, setGroups] = React.useState<string[]>(GROUPS);
+	const [exercises, setExercises] = React.useState<string[]>(EXERCISES);
 
 	const [groupActive, setGroupActive] = React.useState<string>('');
 
@@ -45,7 +53,14 @@ const Home: React.FC = () => {
 					</Text>
 				</HStack>
 
-				<ExerciseCard />
+				<FlatList
+					data={exercises}
+					keyExtractor={(item, index) => item + '_' + index}
+					renderItem={({ item }) => <ExerciseCard title={item} />}
+					showsVerticalScrollIndicator={false}
+					_contentContainerStyle={{ paddingBottom: 20 }}
+					my={10}
+				/>
 			</VStack>
 		</VStack>
 	);
