@@ -31,7 +31,7 @@ const AppRoutes: React.FC = () => {
 
 	return (
 		<Navigator
-			initialRouteName='history'
+			initialRouteName='profile'
 			screenOptions={{
 				headerShown: false,
 				tabBarShowLabel: false,

@@ -1,13 +1,24 @@
 import React from 'react';
-import { Text } from 'native-base';
 
-import { MainContainer } from '@components/index';
+import { Center, ScrollView, VStack } from 'native-base';
+
+import { ScreenHeader, UserPhoto } from '@components/index';
 
 const Profile: React.FC = () => {
 	return (
-		<MainContainer>
-			<Text color='white'>Profile</Text>
-		</MainContainer>
+		<VStack flex={1}>
+			<ScreenHeader title='Perfil' />
+
+			<ScrollView>
+				<Center mt={6} px={10}>
+					<UserPhoto
+						size={33}
+						source={{ uri: 'https://github.com/henrique1204.png' }}
+						alt='Imagem de perfil do usuário.'
+					/>
+				</Center>
+			</ScrollView>
+		</VStack>
 	);
 };
 
