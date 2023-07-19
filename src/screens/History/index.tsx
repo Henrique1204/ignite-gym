@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Heading, SectionList, VStack } from 'native-base';
+import { Heading, SectionList, Text, VStack } from 'native-base';
 
 import { ScreenHeader, HistoryCard } from '@components/index';
 
@@ -22,19 +22,31 @@ const History: React.FC = () => {
 	]);
 
 	return (
-		<VStack>
+		<VStack flex={1}>
 			<ScreenHeader title='Histórico de Exercícios' />
 
 			<SectionList
+				px={8}
 				sections={exercise}
 				keyExtractor={(item) => item}
 				renderItem={({ item }) => <HistoryCard />}
+				contentContainerStyle={
+					exercise.length === 0 && {
+						flex: 1,
+						justifyContent: 'center',
+					}
+				}
 				renderSectionHeader={({ section }) => (
 					<Heading color='gray.200' fontSize='md' mt={10} mb={3}>
 						{section.title}
 					</Heading>
 				)}
-				px={8}
+				ListEmptyComponent={() => (
+					<Text color='gray.100' textAlign='center'>
+						Não há exercícios registrados ainda.{'\n'}
+						Vamos fazer exercícios hoje?
+					</Text>
+				)}
 			/>
 		</VStack>
 	);
