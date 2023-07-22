@@ -1,6 +1,7 @@
 import React from 'react';
+import { TouchableOpacity } from 'react-native';
 
-import { Center, ScrollView, VStack } from 'native-base';
+import { Center, ScrollView, Text, VStack } from 'native-base';
 
 import { ScreenHeader, UserPhoto } from '@components/index';
 
@@ -21,6 +22,18 @@ const Profile: React.FC = () => {
 						alt='Imagem de perfil do usuário.'
 						loading={isPhotoLoading}
 					/>
+
+					<TouchableOpacity>
+						<Text
+							color='green.500'
+							fontWeight='bold'
+							fontSize='md'
+							mt={2}
+							mb={8}
+						>
+							Alterar foto
+						</Text>
+					</TouchableOpacity>
 				</Center>
 			</ScrollView>
 		</VStack>
