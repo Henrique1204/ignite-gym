@@ -1,8 +1,17 @@
 import React from 'react';
 import { TouchableOpacity } from 'react-native';
 
-import { Center, Heading, ScrollView, Text, VStack } from 'native-base';
+import {
+	Center,
+	Heading,
+	ScrollView,
+	Text,
+	useToast,
+	VStack,
+} from 'native-base';
+
 import * as ImagePicker from 'expo-image-picker';
+import * as FileSystem from 'expo-file-system';
 
 import { Button, Input, ScreenHeader, UserPhoto } from '@components/index';
 
@@ -15,8 +24,12 @@ const Profile: React.FC = () => {
 
 	const [userPhoto, setUserPhoto] = React.useState<string>(DEFAULT_PHOTO);
 
+	const toast = useToast();
+
 	const handleUserPhotoSelect = async () => {
 		try {
+			setIsPhotoLoading(true);
+
 			const photoSelected = await ImagePicker.launchImageLibraryAsync({
 				mediaTypes: ImagePicker.MediaTypeOptions.Images,
 				quality: 1,
@@ -24,13 +37,22 @@ const Profile: React.FC = () => {
 				allowsEditing: true,
 			});
 
-			if (photoSelected.canceled) return;
+			const photoUri = photoSelected.assets?.[0].uri;
 
-			setIsPhotoLoading(true);
+			if (photoSelected.canceled || !photoUri) return;
 
-			const photoUri = photoSelected.assets[0].uri;
+			const photoInfo = await FileSystem.getInfoAsync(photoUri);
 
-			if (photoUri) setUserPhoto(photoUri);
+			if (photoInfo.exists && photoInfo.size / 1024 / 1024 > 5) {
+				return toast.show({
+					title: 'Essa imagem é muito grande, escolha uma de até 5mb.',
+					placement: 'top',
+					bg: 'red.500',
+					mx: 4,
+				});
+			}
+
+			setUserPhoto(photoUri);
 		} catch (e) {
 			console.log(e);
 		} finally {
