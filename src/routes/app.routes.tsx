@@ -21,7 +21,7 @@ const AppRoutes: React.FC = () => {
 
 	return (
 		<Navigator
-			initialRouteName='profile'
+			initialRouteName='home'
 			screenOptions={{
 				headerShown: false,
 				tabBarShowLabel: false,

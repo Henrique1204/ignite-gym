@@ -1,14 +1,18 @@
 import React from 'react';
 
 import { TouchableOpacity } from 'react-native';
-import { Heading, HStack, Icon, Image, Text, VStack } from 'native-base';
+import { Box, Heading, HStack, Icon, Image, Text, VStack } from 'native-base';
 
 import { Feather } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 
 import { IAppNavigatorRoutesProps } from '@types_/routes';
 
+import { Button } from '@components/index';
+
 import BodySvg from '@assets/icons/body.svg';
+import SeriesSvg from '@assets/icons/series.svg';
+import RepetitionsSvg from '@assets/icons/repetitions.svg';
 
 const Exercise: React.FC = () => {
 	const { navigate } = useNavigation<IAppNavigatorRoutesProps>();
@@ -54,6 +58,34 @@ const Exercise: React.FC = () => {
 					resizeMode='cover'
 					rounded='lg'
 				/>
+
+				<Box bg='gray.600' rounded='md' pb={4} px={4}>
+					<VStack>
+						<HStack
+							mb={6}
+							mt={5}
+							justifyContent='space-around'
+							alignItems='center'
+						>
+							<HStack>
+								<SeriesSvg />
+
+								<Text color='gray.200' ml={2}>
+									3 séries
+								</Text>
+							</HStack>
+
+							<HStack>
+								<RepetitionsSvg />
+
+								<Text color='gray.200' ml={2}>
+									3 séries
+								</Text>
+							</HStack>
+						</HStack>
+						<Button title='Marcar como realizado' />
+					</VStack>
+				</Box>
 			</VStack>
 		</VStack>
 	);
