@@ -14,7 +14,7 @@ const Profile: React.FC = () => {
 		<VStack flex={1}>
 			<ScreenHeader title='Perfil' />
 
-			<ScrollView>
+			<ScrollView contentContainerStyle={{ paddingBottom: 36 }}>
 				<Center mt={6} px={10}>
 					<UserPhoto
 						size={PHOTO_SIZE}

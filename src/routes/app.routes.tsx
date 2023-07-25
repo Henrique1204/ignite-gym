@@ -2,25 +2,15 @@ import React from 'react';
 import { Platform } from 'react-native';
 import { useTheme } from 'native-base';
 
-import {
-	createBottomTabNavigator,
-	BottomTabNavigationProp,
-} from '@react-navigation/bottom-tabs';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+
+import { IAppRoutes } from '@types_/routes';
 
 import { Exercise, History, Home, Profile } from '@screens/index';
 
 import HistorySvg from '@icons/history.svg';
 import HomeSvg from '@icons/home.svg';
 import ProfileSvg from '@icons/profile.svg';
-
-type IAppRoutes = {
-	exercise: undefined;
-	history: undefined;
-	home: undefined;
-	profile: undefined;
-};
-
-export type IAppNavigatorRoutesProps = BottomTabNavigationProp<IAppRoutes>;
 
 const { Navigator, Screen } = createBottomTabNavigator<IAppRoutes>();
 

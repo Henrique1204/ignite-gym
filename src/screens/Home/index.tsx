@@ -1,6 +1,9 @@
 import React from 'react';
 
+import { useNavigation } from '@react-navigation/native';
 import { FlatList, Heading, HStack, Text, VStack } from 'native-base';
+
+import { IAppNavigatorRoutesProps } from '@types_/routes';
 
 import { ExerciseCard, Group, HomeHeader } from '@components/index';
 
@@ -16,10 +19,15 @@ const EXERCISES: string[] = [
 const Home: React.FC = () => {
 	const [groups, setGroups] = React.useState<string[]>(GROUPS);
 	const [exercises, setExercises] = React.useState<string[]>(EXERCISES);
-
 	const [groupActive, setGroupActive] = React.useState<string>('');
 
+	const { navigate } = useNavigation<IAppNavigatorRoutesProps>();
+
 	const handleChangeGroup = (name: string) => () => setGroupActive(name);
+
+	const handleOpenExercise = () => {
+		navigate('exercise');
+	};
 
 	return (
 		<VStack flex={1}>
@@ -56,7 +64,9 @@ const Home: React.FC = () => {
 				<FlatList
 					data={exercises}
 					keyExtractor={(item, index) => item + '_' + index}
-					renderItem={({ item }) => <ExerciseCard title={item} />}
+					renderItem={({ item }) => (
+						<ExerciseCard title={item} onPress={handleOpenExercise} />
+					)}
 					showsVerticalScrollIndicator={false}
 					_contentContainerStyle={{ paddingBottom: 20 }}
 					my={10}
