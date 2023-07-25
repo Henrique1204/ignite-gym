@@ -1,14 +1,42 @@
 import React from 'react';
 import { TouchableOpacity } from 'react-native';
 
-import { Center, Heading, HStack, ScrollView, Text, VStack } from 'native-base';
+import { Center, Heading, ScrollView, Text, VStack } from 'native-base';
+import * as ImagePicker from 'expo-image-picker';
 
 import { Button, Input, ScreenHeader, UserPhoto } from '@components/index';
 
 const PHOTO_SIZE = 33;
 
+const DEFAULT_PHOTO = 'https://github.com/henrique1204.png';
+
 const Profile: React.FC = () => {
 	const [isPhotoLoading, setIsPhotoLoading] = React.useState<boolean>(false);
+
+	const [userPhoto, setUserPhoto] = React.useState<string>(DEFAULT_PHOTO);
+
+	const handleUserPhotoSelect = async () => {
+		try {
+			const photoSelected = await ImagePicker.launchImageLibraryAsync({
+				mediaTypes: ImagePicker.MediaTypeOptions.Images,
+				quality: 1,
+				aspect: [4, 4],
+				allowsEditing: true,
+			});
+
+			if (photoSelected.canceled) return;
+
+			setIsPhotoLoading(true);
+
+			const photoUri = photoSelected.assets[0].uri;
+
+			if (photoUri) setUserPhoto(photoUri);
+		} catch (e) {
+			console.log(e);
+		} finally {
+			setIsPhotoLoading(false);
+		}
+	};
 
 	return (
 		<VStack flex={1}>
@@ -18,12 +46,12 @@ const Profile: React.FC = () => {
 				<Center mt={6} px={10}>
 					<UserPhoto
 						size={PHOTO_SIZE}
-						source={{ uri: 'https://github.com/henrique1204.png' }}
+						source={{ uri: userPhoto }}
 						alt='Imagem de perfil do usuário.'
 						loading={isPhotoLoading}
 					/>
 
-					<TouchableOpacity>
+					<TouchableOpacity onPress={handleUserPhotoSelect}>
 						<Text
 							color='green.500'
 							fontWeight='bold'
