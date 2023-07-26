@@ -2,7 +2,10 @@ import React from 'react';
 
 import { ScrollView, VStack, Image, Center, Text, Heading } from 'native-base';
 import { useNavigation } from '@react-navigation/native';
+
 import { useForm, Controller } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
 
 import { IAuthNavigatorRoutesProps } from '@routes/auth.routes';
 
@@ -10,6 +13,13 @@ import { Button, Input } from '@components/index';
 
 import LogoSvg from '@icons/logo.svg';
 import BackgroundImage from '@images/background.png';
+
+const signUpSchema = yup.object({
+	name: yup.string().required('Informe o nome.'),
+	email: yup.string().required('Informe o e-mail.').email('E-mail inválido.'),
+	password: yup.string().required('Informe a senha.'),
+	password_confirm: yup.string().required('Informe a senha de confirmação.'),
+});
 
 interface IFormDataProps {
 	name: string;
@@ -24,12 +34,7 @@ const SignUp: React.FC = () => {
 		handleSubmit,
 		formState: { errors },
 	} = useForm<IFormDataProps>({
-		defaultValues: {
-			email: '',
-			name: '',
-			password: '',
-			password_confirm: '',
-		},
+		resolver: yupResolver(signUpSchema),
 	});
 
 	const { navigate } = useNavigation<IAuthNavigatorRoutesProps>();
@@ -70,9 +75,6 @@ const SignUp: React.FC = () => {
 					<Controller
 						name='name'
 						control={control}
-						rules={{
-							required: 'Informe o nome.',
-						}}
 						render={({ field: { value, onChange } }) => (
 							<Input
 								placeholder='Nome'
@@ -86,13 +88,6 @@ const SignUp: React.FC = () => {
 					<Controller
 						name='email'
 						control={control}
-						rules={{
-							required: 'Informe o e-mail.',
-							pattern: {
-								value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-								message: 'E-mail inválido.',
-							},
-						}}
 						render={({ field: { value, onChange } }) => (
 							<Input
 								placeholder='E-mail'
@@ -108,9 +103,6 @@ const SignUp: React.FC = () => {
 					<Controller
 						name='password'
 						control={control}
-						rules={{
-							required: 'Informe a senha.',
-						}}
 						render={({ field: { value, onChange } }) => (
 							<Input
 								placeholder='Senha'
@@ -125,9 +117,6 @@ const SignUp: React.FC = () => {
 					<Controller
 						name='password_confirm'
 						control={control}
-						rules={{
-							required: 'Informe a senha de confirmação.',
-						}}
 						render={({ field: { value, onChange } }) => (
 							<Input
 								placeholder='Confirme a senha'
