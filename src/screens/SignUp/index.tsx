@@ -19,7 +19,11 @@ interface IFormDataProps {
 }
 
 const SignUp: React.FC = () => {
-	const { control, handleSubmit } = useForm<IFormDataProps>({
+	const {
+		control,
+		handleSubmit,
+		formState: { errors },
+	} = useForm<IFormDataProps>({
 		defaultValues: {
 			email: '',
 			name: '',
@@ -66,14 +70,29 @@ const SignUp: React.FC = () => {
 					<Controller
 						name='name'
 						control={control}
+						rules={{
+							required: 'Informe o nome.',
+						}}
 						render={({ field: { value, onChange } }) => (
-							<Input placeholder='Nome' value={value} onChangeText={onChange} />
+							<Input
+								placeholder='Nome'
+								value={value}
+								onChangeText={onChange}
+								errorMessage={errors.name?.message}
+							/>
 						)}
 					/>
 
 					<Controller
 						name='email'
 						control={control}
+						rules={{
+							required: 'Informe o e-mail.',
+							pattern: {
+								value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+								message: 'E-mail inválido.',
+							},
+						}}
 						render={({ field: { value, onChange } }) => (
 							<Input
 								placeholder='E-mail'
@@ -81,6 +100,7 @@ const SignUp: React.FC = () => {
 								autoCapitalize='none'
 								value={value}
 								onChangeText={onChange}
+								errorMessage={errors.email?.message}
 							/>
 						)}
 					/>
@@ -88,12 +108,16 @@ const SignUp: React.FC = () => {
 					<Controller
 						name='password'
 						control={control}
+						rules={{
+							required: 'Informe a senha.',
+						}}
 						render={({ field: { value, onChange } }) => (
 							<Input
 								placeholder='Senha'
 								secureTextEntry
 								value={value}
 								onChangeText={onChange}
+								errorMessage={errors.password?.message}
 							/>
 						)}
 					/>
@@ -101,6 +125,9 @@ const SignUp: React.FC = () => {
 					<Controller
 						name='password_confirm'
 						control={control}
+						rules={{
+							required: 'Informe a senha de confirmação.',
+						}}
 						render={({ field: { value, onChange } }) => (
 							<Input
 								placeholder='Confirme a senha'
@@ -109,6 +136,7 @@ const SignUp: React.FC = () => {
 								onChangeText={onChange}
 								onSubmitEditing={handleSignUp}
 								returnKeyType='send'
+								errorMessage={errors.password_confirm?.message}
 							/>
 						)}
 					/>
