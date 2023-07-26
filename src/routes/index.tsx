@@ -16,9 +16,9 @@ const Routes: React.FC = () => {
 	return (
 		<Box bg='gray.700' flex={1}>
 			<NavigationContainer theme={theme}>
-				{/* <AuthRoutes /> */}
+				<AuthRoutes />
 
-				<AppRoutes />
+				{/* <AppRoutes /> */}
 			</NavigationContainer>
 		</Box>
 	);
