@@ -90,7 +90,7 @@ const Profile: React.FC = () => {
 				</Center>
 
 				<VStack px={10} mt={12} mb={9} flex={1}>
-					<Heading color='gray.200' fontSize='md' mb={2}>
+					<Heading fontFamily='heading' color='gray.200' fontSize='md' mb={2}>
 						Alterar senha
 					</Heading>
 

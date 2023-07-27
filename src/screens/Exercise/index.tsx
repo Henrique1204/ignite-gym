@@ -41,7 +41,12 @@ const Exercise: React.FC = () => {
 					justifyContent='space-between'
 					alignItems='center'
 				>
-					<Heading color='gray.100' fontSize='lg' flexShrink={1}>
+					<Heading
+						fontFamily='heading'
+						color='gray.100'
+						fontSize='lg'
+						flexShrink={1}
+					>
 						Puxada frontal
 					</Heading>
 

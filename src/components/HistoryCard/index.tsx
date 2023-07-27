@@ -18,6 +18,7 @@ const HistoryCard: IComponent = () => {
 				<Heading
 					color='white'
 					fontSize='md'
+					fontFamily='heading'
 					textTransform='capitalize'
 					numberOfLines={1}
 				>
