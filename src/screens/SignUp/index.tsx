@@ -13,6 +13,7 @@ import { Button, Input } from '@components/index';
 
 import LogoSvg from '@icons/logo.svg';
 import BackgroundImage from '@images/background.png';
+import { api } from '@services/api';
 
 const signUpSchema = yup.object({
 	name: yup.string().required('Informe o nome.'),
@@ -47,9 +48,15 @@ const SignUp: React.FC = () => {
 
 	const goToSignIn = () => navigate('signIn');
 
-	const handleSignUp = handleSubmit((data) => {
-		console.log(data);
-	});
+	const handleSignUp = handleSubmit(
+		async ({ password_confirm: _, ...body }) => {
+			try {
+				const { data } = await api.post('/users', body);
+			} catch (e) {
+			} finally {
+			}
+		}
+	);
 
 	return (
 		<ScrollView

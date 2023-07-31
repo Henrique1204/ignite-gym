@@ -16,6 +16,7 @@ module.exports = function (api) {
 						'@images': './src/core/assets/images',
 						'@icons': './src/core/assets/icons',
 						'@hooks': './src/hooks',
+						'@services': './src/services',
 						'@routes': './src/routes',
 						'@screens': './src/screens',
 						'@components': './src/components',
