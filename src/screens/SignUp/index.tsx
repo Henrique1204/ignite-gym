@@ -1,11 +1,26 @@
 import React from 'react';
 
-import { ScrollView, VStack, Image, Center, Text, Heading } from 'native-base';
+import { Alert } from 'react-native';
+
+import {
+	ScrollView,
+	VStack,
+	Image,
+	Center,
+	Text,
+	Heading,
+	useToast,
+} from 'native-base';
+
 import { useNavigation } from '@react-navigation/native';
 
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
+
+import AppError from '@utils/AppError';
+
+import { api } from '@services/api';
 
 import { IAuthNavigatorRoutesProps } from '@routes/auth.routes';
 
@@ -13,7 +28,6 @@ import { Button, Input } from '@components/index';
 
 import LogoSvg from '@icons/logo.svg';
 import BackgroundImage from '@images/background.png';
-import { api } from '@services/api';
 
 const signUpSchema = yup.object({
 	name: yup.string().required('Informe o nome.'),
@@ -46,6 +60,8 @@ const SignUp: React.FC = () => {
 
 	const { navigate } = useNavigation<IAuthNavigatorRoutesProps>();
 
+	const toast = useToast();
+
 	const goToSignIn = () => navigate('signIn');
 
 	const handleSignUp = handleSubmit(
@@ -53,7 +69,15 @@ const SignUp: React.FC = () => {
 			try {
 				const { data } = await api.post('/users', body);
 			} catch (e) {
-			} finally {
+				const isAppError = e instanceof AppError;
+
+				toast.show({
+					title: isAppError
+						? e.message
+						: 'Não foi possível criar a conta. Tente novamente mais tarde.',
+					placement: 'top',
+					bgColor: 'red.500',
+				});
 			}
 		}
 	);
