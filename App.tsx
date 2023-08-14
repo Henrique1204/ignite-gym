@@ -8,11 +8,13 @@ import {
 	Roboto_700Bold,
 } from '@expo-google-fonts/roboto';
 
+import { AuthContextProvider } from '@contexts/AuthContext';
+
 import { THEME } from '@assets/theme/index';
 
-import Routes from './src/routes';
-
 import { Loader } from '@components/index';
+
+import Routes from './src/routes';
 
 const App: React.FC = () => {
 	const [fontsLoaded] = useFonts({
@@ -33,7 +35,9 @@ const App: React.FC = () => {
 				accessibilityLabel='Animação de carregamento esperando arquivos carregarem.'
 				aria-hidden={fontsLoaded}
 			>
-				<Routes />
+				<AuthContextProvider>
+					<Routes />
+				</AuthContextProvider>
 			</Loader>
 		</NativeBaseProvider>
 	);
