@@ -50,6 +50,8 @@ interface IFormDataProps {
 }
 
 const SignUp: React.FC = () => {
+	const [loading, setLoading] = React.useState<boolean>(false);
+
 	const {
 		control,
 		handleSubmit,
@@ -67,8 +69,14 @@ const SignUp: React.FC = () => {
 	const handleSignUp = handleSubmit(
 		async ({ password_confirm: _, ...body }) => {
 			try {
-				const { data } = await api.post('/users', body);
+				setLoading(true);
+
+				await api.post('/users', body);
+
+				goToSignIn();
 			} catch (e) {
+				setLoading(false);
+
 				const isAppError = e instanceof AppError;
 
 				toast.show({
@@ -167,7 +175,11 @@ const SignUp: React.FC = () => {
 						)}
 					/>
 
-					<Button title='Criar e acessar' onPress={handleSignUp} />
+					<Button
+						title='Criar e acessar'
+						onPress={handleSignUp}
+						isLoading={loading}
+					/>
 				</Center>
 
 				<Button

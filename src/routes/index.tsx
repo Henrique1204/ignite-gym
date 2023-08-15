@@ -9,7 +9,7 @@ import AuthRoutes from './auth.routes';
 import AppRoutes from './app.routes';
 
 const Routes: React.FC = () => {
-	const contextData = useAuthContext();
+	const { user } = useAuthContext();
 
 	const { colors } = useTheme();
 
@@ -20,9 +20,7 @@ const Routes: React.FC = () => {
 	return (
 		<Box bg='gray.700' flex={1}>
 			<NavigationContainer theme={theme}>
-				<AuthRoutes />
-
-				{/* <AppRoutes /> */}
+				{user === null ? <AuthRoutes /> : <AppRoutes />}
 			</NavigationContainer>
 		</Box>
 	);
