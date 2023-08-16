@@ -4,14 +4,26 @@ import { TouchableOpacity } from 'react-native';
 import { Heading, HStack, VStack, Text, Icon } from 'native-base';
 import { MaterialIcons } from '@expo/vector-icons';
 
+import { useAuthContext } from '@contexts/AuthContext';
+
+import userPhotoDefault from '@assets/images/userPhotoDefault.png';
+
 import UserPhoto from '../UserPhoto';
 
 const HomeHeader: IComponent = () => {
+	const { user } = useAuthContext();
+
 	return (
 		<HStack bg='gray.600' pt={16} pb={5} px={8} alignItems='center'>
 			<UserPhoto
 				size={16}
-				source={{ uri: 'https://github.com/henrique1204.png' }}
+				source={
+					user?.avatar
+						? {
+								uri: user?.avatar,
+						  }
+						: userPhotoDefault
+				}
 				alt='Imagem de perfil do usuário.'
 				mr={4}
 			/>
@@ -22,7 +34,7 @@ const HomeHeader: IComponent = () => {
 				</Text>
 
 				<Heading fontFamily='heading' color='gray.100' fontSize='md'>
-					Paulo
+					{user?.name}
 				</Heading>
 			</VStack>
 
