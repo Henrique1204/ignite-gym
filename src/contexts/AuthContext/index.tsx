@@ -3,14 +3,20 @@ import React from 'react';
 import { IUserDTO } from '@types_/dtos/UserDTO';
 
 import { api } from '@services/api';
-import { storageUserGet, storageUserSave } from '@storage/storageUser';
+import {
+	storageUserClear,
+	storageUserGet,
+	storageUserSave,
+} from '@storage/storageUser';
 
 type signInFn = (body: { email: string; password: string }) => Promise<void>;
+type signOutFn = () => Promise<void>;
 
 export interface IAuthContextData {
 	user: IUserDTO | null;
 	isLoadingStorageData: boolean;
 	signIn: signInFn;
+	signOut: signOutFn;
 }
 
 export const AuthContext = React.createContext<IAuthContextData>(
@@ -35,6 +41,19 @@ export const AuthContextProvider: IComponentWithChildren = ({ children }) => {
 		}
 	};
 
+	const signOut: signOutFn = async () => {
+		try {
+			setIsLoadingStorageData(true);
+
+			setUser(null);
+			storageUserClear();
+		} catch (e) {
+			throw e;
+		} finally {
+			setIsLoadingStorageData(false);
+		}
+	};
+
 	const loadUserData = async () => {
 		try {
 			const user = await storageUserGet();
@@ -52,7 +71,9 @@ export const AuthContextProvider: IComponentWithChildren = ({ children }) => {
 	}, []);
 
 	return (
-		<AuthContext.Provider value={{ user, isLoadingStorageData, signIn }}>
+		<AuthContext.Provider
+			value={{ user, isLoadingStorageData, signIn, signOut }}
+		>
 			{children}
 		</AuthContext.Provider>
 	);

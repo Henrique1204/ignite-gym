@@ -15,3 +15,7 @@ export const storageUserGet = async () => {
 
 	return JSON.parse(user);
 };
+
+export const storageUserClear = async () => {
+	await AsyncStorage.removeItem(USER_STORAGE);
+};

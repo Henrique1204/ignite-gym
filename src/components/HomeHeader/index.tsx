@@ -11,7 +11,7 @@ import userPhotoDefault from '@assets/images/userPhotoDefault.png';
 import UserPhoto from '../UserPhoto';
 
 const HomeHeader: IComponent = () => {
-	const { user } = useAuthContext();
+	const { user, signOut } = useAuthContext();
 
 	return (
 		<HStack bg='gray.600' pt={16} pb={5} px={8} alignItems='center'>
@@ -38,7 +38,7 @@ const HomeHeader: IComponent = () => {
 				</Heading>
 			</VStack>
 
-			<TouchableOpacity>
+			<TouchableOpacity onPress={signOut}>
 				<Icon as={MaterialIcons} name='logout' color='gray.200' size={7} />
 			</TouchableOpacity>
 		</HStack>
