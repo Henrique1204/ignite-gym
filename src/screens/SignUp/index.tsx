@@ -24,6 +24,8 @@ import { api } from '@services/api';
 
 import { IAuthNavigatorRoutesProps } from '@routes/auth.routes';
 
+import { useAuthContext } from '@contexts/AuthContext';
+
 import { Button, Input } from '@components/index';
 
 import LogoSvg from '@icons/logo.svg';
@@ -64,6 +66,8 @@ const SignUp: React.FC = () => {
 
 	const toast = useToast();
 
+	const { signIn } = useAuthContext();
+
 	const goToSignIn = () => navigate('signIn');
 
 	const handleSignUp = handleSubmit(
@@ -73,7 +77,7 @@ const SignUp: React.FC = () => {
 
 				await api.post('/users', body);
 
-				goToSignIn();
+				await signIn(body);
 			} catch (e) {
 				setLoading(false);
 

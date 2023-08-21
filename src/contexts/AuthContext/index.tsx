@@ -3,18 +3,19 @@ import React from 'react';
 import { IUserDTO } from '@types_/dtos/UserDTO';
 
 import { api } from '@services/api';
-import {
-	storageUserClear,
-	storageUserGet,
-	storageUserSave,
-} from '@storage/storageUser';
+
+import * as StorageUser from '@storage/storageUser';
+
+import * as StorageToken from '@storage/storageToken';
 
 type signInFn = (body: { email: string; password: string }) => Promise<void>;
 type signOutFn = () => Promise<void>;
 
 export interface IAuthContextData {
 	user: IUserDTO | null;
+
 	isLoadingStorageData: boolean;
+
 	signIn: signInFn;
 	signOut: signOutFn;
 }
@@ -25,17 +26,41 @@ export const AuthContext = React.createContext<IAuthContextData>(
 
 export const AuthContextProvider: IComponentWithChildren = ({ children }) => {
 	const [user, setUser] = React.useState<IUserDTO | null>(null);
+
 	const [isLoadingStorageData, setIsLoadingStorageData] =
 		React.useState<boolean>(true);
 
+	const userAndTokenUpdate = (userData: IUserDTO, token: string) => {
+		api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+
+		setUser(userData);
+	};
+
+	const storageUseAndTokenSave = async (userData: IUserDTO, token: string) => {
+		try {
+			setIsLoadingStorageData(true);
+
+			await StorageUser.storageUserSave(userData);
+			await StorageToken.storageTokenSave(token);
+		} catch (e) {
+			throw e;
+		} finally {
+			setIsLoadingStorageData(false);
+		}
+	};
+
 	const signIn: signInFn = async (body) => {
 		try {
-			const { data } = await api.post('/sessions', body);
+			const { data } = await api.post<{ user: IUserDTO; token: string }>(
+				'/sessions',
+				body
+			);
 
-			if (!data.user) return;
+			if (!data.user || !data.token) return;
 
-			setUser(data.user);
-			storageUserSave(data.user);
+			await storageUseAndTokenSave(data.user, data.token);
+
+			userAndTokenUpdate(data.user, data.token);
 		} catch (e) {
 			throw e;
 		}
@@ -46,7 +71,9 @@ export const AuthContextProvider: IComponentWithChildren = ({ children }) => {
 			setIsLoadingStorageData(true);
 
 			setUser(null);
-			storageUserClear();
+
+			StorageUser.storageUserClear();
+			StorageToken.storageTokenClear();
 		} catch (e) {
 			throw e;
 		} finally {
@@ -56,9 +83,12 @@ export const AuthContextProvider: IComponentWithChildren = ({ children }) => {
 
 	const loadUserData = async () => {
 		try {
-			const user = await storageUserGet();
+			setIsLoadingStorageData(true);
 
-			setUser(user);
+			const userLogged = await StorageUser.storageUserGet();
+			const token = await StorageToken.storageTokenGet();
+
+			if (token && userLogged) userAndTokenUpdate(userLogged, token);
 		} catch (e) {
 			throw e;
 		} finally {

@@ -8,7 +8,7 @@ export const storageUserSave = async (user: IUserDTO) => {
 	await AsyncStorage.setItem(USER_STORAGE, JSON.stringify(user));
 };
 
-export const storageUserGet = async () => {
+export const storageUserGet = async (): Promise<IUserDTO | null> => {
 	const user = await AsyncStorage.getItem(USER_STORAGE);
 
 	if (!user) return null;
