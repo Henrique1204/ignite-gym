@@ -1,9 +1,10 @@
 import React from 'react';
 
-import { useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { FlatList, Heading, HStack, Text, useToast, VStack } from 'native-base';
 
 import { IAppNavigatorRoutesProps } from '@types_/routes';
+import { IExerciseDTO } from '@types_/dtos/ExerciceDTO';
 
 import { api } from '@services/api';
 
@@ -11,16 +12,9 @@ import AppError from '@utils/AppError';
 
 import { ExerciseCard, Group, HomeHeader } from '@components/index';
 
-const EXERCISES: string[] = [
-	'Remada unilateral',
-	'Rosca',
-	'Rosca invertida',
-	'Leg Press',
-];
-
 const Home: React.FC = () => {
 	const [groups, setGroups] = React.useState<string[]>([]);
-	const [exercises, setExercises] = React.useState<string[]>(EXERCISES);
+	const [exercises, setExercises] = React.useState<IExerciseDTO[]>([]);
 	const [groupActive, setGroupActive] = React.useState<string>('');
 
 	const { navigate } = useNavigation<IAppNavigatorRoutesProps>();
@@ -36,6 +30,7 @@ const Home: React.FC = () => {
 			const response = await api.get('/groups');
 
 			setGroups(response.data);
+			setGroupActive(response.data[0]);
 		} catch (error) {
 			const isAppError = error instanceof AppError;
 
@@ -51,9 +46,35 @@ const Home: React.FC = () => {
 		}
 	};
 
+	const fetchExerciseByGroup = async (group: string) => {
+		try {
+			const response = await api.get(`/exercises/bygroup/${group}`);
+
+			setExercises(response?.data);
+		} catch (error) {
+			const isAppError = error instanceof AppError;
+
+			const title = isAppError
+				? error.message
+				: 'Não foi possível carregar os grupos exercícios.';
+
+			toast.show({
+				title,
+				placement: 'top',
+				bgColor: 'red.500',
+			});
+		}
+	};
+
 	React.useEffect(() => {
 		fetchGroups();
 	}, []);
+
+	useFocusEffect(
+		React.useCallback(() => {
+			fetchExerciseByGroup(groupActive);
+		}, [groupActive])
+	);
 
 	return (
 		<VStack flex={1}>
@@ -90,9 +111,13 @@ const Home: React.FC = () => {
 
 				<FlatList
 					data={exercises}
-					keyExtractor={(item, index) => item + '_' + index}
+					keyExtractor={(item) => item.id.toString()}
 					renderItem={({ item }) => (
-						<ExerciseCard title={item} onPress={handleOpenExercise} />
+						<ExerciseCard
+							{...item}
+							id={item.id.toString()}
+							onPress={handleOpenExercise}
+						/>
 					)}
 					showsVerticalScrollIndicator={false}
 					_contentContainerStyle={{ paddingBottom: 20 }}
