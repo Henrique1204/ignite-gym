@@ -1,13 +1,15 @@
 import React from 'react';
 
 import { useNavigation } from '@react-navigation/native';
-import { FlatList, Heading, HStack, Text, VStack } from 'native-base';
+import { FlatList, Heading, HStack, Text, useToast, VStack } from 'native-base';
 
 import { IAppNavigatorRoutesProps } from '@types_/routes';
 
-import { ExerciseCard, Group, HomeHeader } from '@components/index';
+import { api } from '@services/api';
 
-const GROUPS = ['costas', 'bíceps', 'tríceps', 'ombro'];
+import AppError from '@utils/AppError';
+
+import { ExerciseCard, Group, HomeHeader } from '@components/index';
 
 const EXERCISES: string[] = [
 	'Remada unilateral',
@@ -17,17 +19,41 @@ const EXERCISES: string[] = [
 ];
 
 const Home: React.FC = () => {
-	const [groups, setGroups] = React.useState<string[]>(GROUPS);
+	const [groups, setGroups] = React.useState<string[]>([]);
 	const [exercises, setExercises] = React.useState<string[]>(EXERCISES);
 	const [groupActive, setGroupActive] = React.useState<string>('');
 
 	const { navigate } = useNavigation<IAppNavigatorRoutesProps>();
 
+	const toast = useToast();
+
 	const handleChangeGroup = (name: string) => () => setGroupActive(name);
 
-	const handleOpenExercise = () => {
-		navigate('exercise');
+	const handleOpenExercise = () => navigate('exercise');
+
+	const fetchGroups = async () => {
+		try {
+			const response = await api.get('/groups');
+
+			setGroups(response.data);
+		} catch (error) {
+			const isAppError = error instanceof AppError;
+
+			const title = isAppError
+				? error.message
+				: 'Não foi possível carregar os grupos musculares.';
+
+			toast.show({
+				title,
+				placement: 'top',
+				bgColor: 'red.500',
+			});
+		}
 	};
+
+	React.useEffect(() => {
+		fetchGroups();
+	}, []);
 
 	return (
 		<VStack flex={1}>
