@@ -10,9 +10,11 @@ import { api } from '@services/api';
 
 import AppError from '@utils/AppError';
 
-import { ExerciseCard, Group, HomeHeader } from '@components/index';
+import { ExerciseCard, Group, HomeHeader, Loader } from '@components/index';
 
 const Home: React.FC = () => {
+	const [isLoading, setIsLoading] = React.useState<boolean>(true);
+
 	const [groups, setGroups] = React.useState<string[]>([]);
 	const [exercises, setExercises] = React.useState<IExerciseDTO[]>([]);
 	const [groupActive, setGroupActive] = React.useState<string>('');
@@ -48,6 +50,8 @@ const Home: React.FC = () => {
 
 	const fetchExerciseByGroup = async (group: string) => {
 		try {
+			setIsLoading(true);
+
 			const response = await api.get(`/exercises/bygroup/${group}`);
 
 			setExercises(response?.data);
@@ -63,6 +67,8 @@ const Home: React.FC = () => {
 				placement: 'top',
 				bgColor: 'red.500',
 			});
+		} finally {
+			setIsLoading(false);
 		}
 	};
 
@@ -98,32 +104,34 @@ const Home: React.FC = () => {
 				minH={10}
 			/>
 
-			<VStack flex={1} px={8}>
-				<HStack justifyContent='space-between' mb={5}>
-					<Heading fontFamily='heading' color='gray.200' fontSize='md'>
-						Exercícios
-					</Heading>
+			<Loader loading={isLoading}>
+				<VStack flex={1} px={8}>
+					<HStack justifyContent='space-between' mb={5}>
+						<Heading fontFamily='heading' color='gray.200' fontSize='md'>
+							Exercícios
+						</Heading>
 
-					<Text color='gray.200' fontSize='sm'>
-						4
-					</Text>
-				</HStack>
+						<Text color='gray.200' fontSize='sm'>
+							{exercises.length}
+						</Text>
+					</HStack>
 
-				<FlatList
-					data={exercises}
-					keyExtractor={(item) => item.id.toString()}
-					renderItem={({ item }) => (
-						<ExerciseCard
-							{...item}
-							id={item.id.toString()}
-							onPress={handleOpenExercise}
-						/>
-					)}
-					showsVerticalScrollIndicator={false}
-					_contentContainerStyle={{ paddingBottom: 20 }}
-					my={10}
-				/>
-			</VStack>
+					<FlatList
+						data={exercises}
+						keyExtractor={(item) => item.id.toString()}
+						renderItem={({ item }) => (
+							<ExerciseCard
+								{...item}
+								id={item.id.toString()}
+								onPress={handleOpenExercise}
+							/>
+						)}
+						showsVerticalScrollIndicator={false}
+						_contentContainerStyle={{ paddingBottom: 20 }}
+						my={10}
+					/>
+				</VStack>
+			</Loader>
 		</VStack>
 	);
 };
