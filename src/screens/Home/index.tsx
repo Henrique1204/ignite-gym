@@ -25,7 +25,9 @@ const Home: React.FC = () => {
 
 	const handleChangeGroup = (name: string) => () => setGroupActive(name);
 
-	const handleOpenExercise = () => navigate('exercise');
+	const handleOpenExercise = (exerciseId: string) => {
+		navigate('exercise', { exerciseId });
+	};
 
 	const fetchGroups = async () => {
 		try {
@@ -123,7 +125,7 @@ const Home: React.FC = () => {
 							<ExerciseCard
 								{...item}
 								id={item.id.toString()}
-								onPress={handleOpenExercise}
+								onPress={() => handleOpenExercise(item.id.toString())}
 							/>
 						)}
 						showsVerticalScrollIndicator={false}

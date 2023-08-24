@@ -7,7 +7,7 @@ import { Heading, HStack, Image, Text, VStack, Icon } from 'native-base';
 
 import { IExerciseDTO } from '@types_/dtos/ExerciceDTO';
 
-import { api } from '@services/api';
+import { getThumbUri } from '@helpers/getImage';
 
 interface IExerciseCardProps
 	extends TouchableOpacityProps,
@@ -31,7 +31,7 @@ const ExerciseCard: IComponent<IExerciseCardProps> = ({
 				rounded='md'
 			>
 				<Image
-					source={{ uri: `${api.defaults.baseURL}/exercise/thumb/${thumb}` }}
+					source={{ uri: getThumbUri(thumb) }}
 					alt='Imagem do exercício'
 					w={16}
 					h={16}
