@@ -4,7 +4,7 @@ import { useFocusEffect } from '@react-navigation/native';
 
 import { Heading, SectionList, Text, useToast, VStack } from 'native-base';
 
-import { HistoryByDayDTO } from '@types_/dtos/HistoryByDayDTO';
+import { IHistoryByDayDTO } from '@types_/dtos/HistoryByDayDTO';
 
 import { api } from '@services/api';
 
@@ -13,7 +13,7 @@ import AppError from '@utils/AppError';
 import { ScreenHeader, HistoryCard, Loader } from '@components/index';
 
 const History: React.FC = () => {
-	const [exercises, setExercises] = React.useState<HistoryByDayDTO[]>([]);
+	const [exercises, setExercises] = React.useState<IHistoryByDayDTO[]>([]);
 
 	const [loading, setLoading] = React.useState<boolean>(true);
 
@@ -57,7 +57,7 @@ const History: React.FC = () => {
 					px={8}
 					sections={exercises}
 					keyExtractor={({ id }) => `history-exercise-${id}`}
-					renderItem={({ item }) => <HistoryCard />}
+					renderItem={({ item }) => <HistoryCard data={item} />}
 					contentContainerStyle={
 						exercises.length === 0 && {
 							flex: 1,

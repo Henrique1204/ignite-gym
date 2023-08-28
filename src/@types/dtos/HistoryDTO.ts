@@ -1,4 +1,4 @@
-export type HistoryDTO = {
+export type IHistoryDTO = {
 	id: string;
 	name: string;
 	group: string;

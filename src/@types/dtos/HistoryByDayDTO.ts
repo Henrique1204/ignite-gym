@@ -1,6 +1,6 @@
-import { HistoryDTO } from '@types_/dtos/HistoryDTO';
+import { IHistoryDTO } from '@types_/dtos/HistoryDTO';
 
-export type HistoryByDayDTO = {
+export type IHistoryByDayDTO = {
 	title: string;
-	data: HistoryDTO[];
+	data: IHistoryDTO[];
 };

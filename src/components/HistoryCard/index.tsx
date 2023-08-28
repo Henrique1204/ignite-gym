@@ -1,8 +1,13 @@
 import React from 'react';
 
 import { Heading, HStack, Text, VStack } from 'native-base';
+import { IHistoryDTO } from '@types_/dtos/HistoryDTO';
 
-const HistoryCard: IComponent = () => {
+type IHistoryCardProps = {
+	data: IHistoryDTO;
+};
+
+const HistoryCard: IComponent<IHistoryCardProps> = ({ data }) => {
 	return (
 		<HStack
 			w='full'
@@ -22,16 +27,16 @@ const HistoryCard: IComponent = () => {
 					textTransform='capitalize'
 					numberOfLines={1}
 				>
-					Costas
+					{data.group}
 				</Heading>
 
 				<Text color='gray.100' fontSize='lg' numberOfLines={1}>
-					Puxada frontal
+					{data.name}
 				</Text>
 			</VStack>
 
 			<Text color='gray.300' fontSize='md'>
-				08:56
+				{data.hour}
 			</Text>
 		</HStack>
 	);
