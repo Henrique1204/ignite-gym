@@ -69,7 +69,7 @@ const Exercise: React.FC = () => {
 		}
 	};
 
-	const handleExercise = async () => {
+	const handleRegisterExercice = async () => {
 		try {
 			setSendingRegister(true);
 
@@ -180,7 +180,7 @@ const Exercise: React.FC = () => {
 								<Button
 									isLoading={sendingRegister}
 									title='Marcar como realizado'
-									onPress={handleExercise}
+									onPress={handleRegisterExercice}
 								/>
 							</VStack>
 						</Box>
