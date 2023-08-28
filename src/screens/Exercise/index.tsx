@@ -33,7 +33,9 @@ import RepetitionsSvg from '@assets/icons/repetitions.svg';
 
 const Exercise: React.FC = () => {
 	const [exercise, setExercise] = React.useState<IExerciseDTO | null>(null);
+
 	const [loading, setLoading] = React.useState<boolean>(true);
+	const [sendingRegister, setSendingRegister] = React.useState<boolean>(false);
 
 	const { navigate } = useNavigation<IAppNavigatorRoutesProps>();
 
@@ -64,6 +66,38 @@ const Exercise: React.FC = () => {
 			});
 		} finally {
 			setLoading(false);
+		}
+	};
+
+	const handleExercise = async () => {
+		try {
+			setSendingRegister(true);
+
+			await api.post('/history', {
+				exercise_id: exercise?.id,
+			});
+
+			toast.show({
+				title: 'Parabéns! Exercício registrado no seu histórico.',
+				placement: 'top',
+				bgColor: 'green.500',
+			});
+
+			navigate('history');
+		} catch (error) {
+			const isAppError = error instanceof AppError;
+
+			const title = isAppError
+				? error.message
+				: 'Não foi possível registrar o exercício.';
+
+			toast.show({
+				title,
+				placement: 'top',
+				bgColor: 'red.500',
+			});
+		} finally {
+			setSendingRegister(false);
 		}
 	};
 
@@ -142,7 +176,12 @@ const Exercise: React.FC = () => {
 										</Text>
 									</HStack>
 								</HStack>
-								<Button title='Marcar como realizado' />
+
+								<Button
+									isLoading={sendingRegister}
+									title='Marcar como realizado'
+									onPress={handleExercise}
+								/>
 							</VStack>
 						</Box>
 					</VStack>

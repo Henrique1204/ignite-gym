@@ -31,7 +31,7 @@ export const AuthContextProvider: IComponentWithChildren = ({ children }) => {
 		React.useState<boolean>(true);
 
 	const userAndTokenUpdate = (userData: IUserDTO, token: string) => {
-		api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+		api.defaults.headers['authorization'] = `Bearer ${token}`;
 
 		setUser(userData);
 	};
