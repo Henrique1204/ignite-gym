@@ -4,6 +4,8 @@ import { TouchableOpacity } from 'react-native';
 import { Heading, HStack, VStack, Text, Icon } from 'native-base';
 import { MaterialIcons } from '@expo/vector-icons';
 
+import { getAvatarUri } from '@helpers/getImage';
+
 import { useAuthContext } from '@contexts/AuthContext';
 
 import userPhotoDefault from '@assets/images/userPhotoDefault.png';
@@ -20,7 +22,7 @@ const HomeHeader: IComponent = () => {
 				source={
 					user?.avatar
 						? {
-								uri: user?.avatar,
+								uri: getAvatarUri(user.avatar),
 						  }
 						: userPhotoDefault
 				}

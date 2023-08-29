@@ -10,6 +10,8 @@ import {
 	VStack,
 } from 'native-base';
 
+import { useFocusEffect } from '@react-navigation/native';
+
 import * as ImagePicker from 'expo-image-picker';
 import * as FileSystem from 'expo-file-system';
 import * as yup from 'yup';
@@ -17,6 +19,7 @@ import * as yup from 'yup';
 import { Controller, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 
+import { getAvatarUri } from '@helpers/getImage';
 import { useAuthContext } from '@contexts/AuthContext';
 
 import AppError from '@utils/AppError';
@@ -24,11 +27,10 @@ import AppError from '@utils/AppError';
 import { api } from '@services/api';
 
 import { Button, Input, ScreenHeader, UserPhoto } from '@components/index';
-import { useFocusEffect } from '@react-navigation/native';
+
+import userPhotoDefault from '@assets/images/userPhotoDefault.png';
 
 const PHOTO_SIZE = 33;
-
-const DEFAULT_PHOTO = 'https://github.com/henrique1204.png';
 
 interface IFormDataProps {
 	name: string;
@@ -61,13 +63,9 @@ const profileSchema = yup.object({
 		}),
 });
 
-const SUCCESS_CODE = 200;
-
 const Profile: React.FC = () => {
 	const [isPhotoLoading, setIsPhotoLoading] = React.useState<boolean>(false);
 	const [isUpdating, setIsUpdating] = React.useState<boolean>(false);
-
-	const [userPhoto, setUserPhoto] = React.useState<string>(DEFAULT_PHOTO);
 
 	const { user, updateUserProfile } = useAuthContext();
 
@@ -127,19 +125,26 @@ const Profile: React.FC = () => {
 
 			userPhotoUploadForm.append('avatar', photoFile);
 
-			await api.patch('/users/avatar', userPhotoUploadForm, {
-				headers: {
-					'Content-Type': 'multipart/form-data',
-				},
-			});
+			const avatarUpdatedResponse = await api.patch(
+				'/users/avatar',
+				userPhotoUploadForm,
+				{
+					headers: {
+						'Content-Type': 'multipart/form-data',
+					},
+				}
+			);
+
+			const userUpdated = { ...user! };
+			userUpdated.avatar = avatarUpdatedResponse.data.avatar;
+
+			updateUserProfile(userUpdated);
 
 			toast.show({
 				title: 'Foto atualizada!',
 				placement: 'top',
 				bgColor: 'green.500',
 			});
-
-			setUserPhoto(photoUri);
 		} catch (e) {
 			console.log(e);
 		} finally {
@@ -153,7 +158,7 @@ const Profile: React.FC = () => {
 
 			await api.put('/users', data);
 
-			const userUpdated = user!;
+			const userUpdated = { ...user! };
 			userUpdated.name = data.name;
 
 			await updateUserProfile(userUpdated);
@@ -192,7 +197,11 @@ const Profile: React.FC = () => {
 				<Center mt={6} px={10}>
 					<UserPhoto
 						size={PHOTO_SIZE}
-						source={{ uri: userPhoto }}
+						source={
+							user?.avatar
+								? { uri: getAvatarUri(user.avatar) }
+								: userPhotoDefault
+						}
 						alt='Imagem de perfil do usuário.'
 						loading={isPhotoLoading}
 					/>
