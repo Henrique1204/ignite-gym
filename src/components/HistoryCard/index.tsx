@@ -3,9 +3,9 @@ import React from 'react';
 import { Heading, HStack, Text, VStack } from 'native-base';
 import { IHistoryDTO } from '@types_/dtos/HistoryDTO';
 
-type IHistoryCardProps = {
+interface IHistoryCardProps {
 	data: IHistoryDTO;
-};
+}
 
 const HistoryCard: IComponent<IHistoryCardProps> = ({ data }) => {
 	return (

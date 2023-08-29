@@ -25,10 +25,10 @@ import { Button, Input } from '@components/index';
 import LogoSvg from '@icons/logo.svg';
 import BackgroundImage from '@images/background.png';
 
-type IFormDataProps = {
+interface IFormDataProps {
 	email: string;
 	password: string;
-};
+}
 
 const SignIn: React.FC = () => {
 	const [loading, setLoading] = React.useState<boolean>(false);

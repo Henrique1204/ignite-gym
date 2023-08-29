@@ -10,6 +10,7 @@ import * as StorageToken from '@storage/storageToken';
 
 type signInFn = (body: { email: string; password: string }) => Promise<void>;
 type signOutFn = () => Promise<void>;
+type updateUserProfileFn = (userUpdate: IUserDTO) => Promise<void>;
 
 export interface IAuthContextData {
 	user: IUserDTO | null;
@@ -18,6 +19,7 @@ export interface IAuthContextData {
 
 	signIn: signInFn;
 	signOut: signOutFn;
+	updateUserProfile: updateUserProfileFn;
 }
 
 export const AuthContext = React.createContext<IAuthContextData>(
@@ -36,12 +38,13 @@ export const AuthContextProvider: IComponentWithChildren = ({ children }) => {
 		setUser(userData);
 	};
 
-	const storageUseAndTokenSave = async (userData: IUserDTO, token: string) => {
+	const storageUseAndTokenSave = async (userData: IUserDTO, token?: string) => {
 		try {
 			setIsLoadingStorageData(true);
 
 			await StorageUser.storageUserSave(userData);
-			await StorageToken.storageTokenSave(token);
+
+			if (token) await StorageToken.storageTokenSave(token);
 		} catch (e) {
 			throw e;
 		} finally {
@@ -81,6 +84,16 @@ export const AuthContextProvider: IComponentWithChildren = ({ children }) => {
 		}
 	};
 
+	const updateUserProfile: updateUserProfileFn = async (userUpdate) => {
+		try {
+			setUser(userUpdate);
+
+			await storageUseAndTokenSave(userUpdate);
+		} catch (e) {
+			throw e;
+		}
+	};
+
 	const loadUserData = async () => {
 		try {
 			setIsLoadingStorageData(true);
@@ -102,7 +115,7 @@ export const AuthContextProvider: IComponentWithChildren = ({ children }) => {
 
 	return (
 		<AuthContext.Provider
-			value={{ user, isLoadingStorageData, signIn, signOut }}
+			value={{ user, isLoadingStorageData, signIn, signOut, updateUserProfile }}
 		>
 			{children}
 		</AuthContext.Provider>
