@@ -113,6 +113,32 @@ const Profile: React.FC = () => {
 				});
 			}
 
+			const fileExtension = photoUri.split('.').pop();
+
+			const photoFile = {
+				name: `${user!.name
+					.trim()
+					.replace(/ /g, '-')}.${fileExtension}`.toLowerCase(),
+				uri: photoUri,
+				type: `${photoSelected.assets[0].type}/${fileExtension}`,
+			} as any;
+
+			const userPhotoUploadForm = new FormData();
+
+			userPhotoUploadForm.append('avatar', photoFile);
+
+			await api.patch('/users/avatar', userPhotoUploadForm, {
+				headers: {
+					'Content-Type': 'multipart/form-data',
+				},
+			});
+
+			toast.show({
+				title: 'Foto atualizada!',
+				placement: 'top',
+				bgColor: 'green.500',
+			});
+
 			setUserPhoto(photoUri);
 		} catch (e) {
 			console.log(e);
