@@ -1,20 +1,51 @@
-import axios from 'axios';
+import axios, { AxiosInstance } from 'axios';
 
 import AppError from '@utils/AppError';
+import { storageTokenGet } from '@storage/storageToken';
+
+type singOutFn = () => void;
+
+type APIInstanceProps = AxiosInstance & {
+	registerInterceptTokenManager: (singOut: singOutFn) => () => void;
+};
 
 export const api = axios.create({
 	baseURL: 'http://192.168.1.222:3333',
-});
+}) as APIInstanceProps;
 
-api.interceptors.response.use(
-	(response) => response,
-	(error) => {
-		if (error.response && error.response.data) {
-			return Promise.reject(new AppError(error.response.data.message));
+api.registerInterceptTokenManager = (signOut) => {
+	const interceptTokenManager = api.interceptors.response.use(
+		(response) => response,
+		async (requestError) => {
+			if (requestError?.response?.status === 401) {
+				const errorsMessage = ['token.expired', 'token.invalid'];
+
+				if (!errorsMessage.includes(requestError.response.data?.message)) {
+					return signOut();
+				}
+
+				const tokens = await storageTokenGet();
+
+				if (!tokens?.refreshToken) {
+					signOut();
+
+					return Promise.reject(requestError);
+				}
+			}
+
+			if (requestError.response && requestError.response.data) {
+				return Promise.reject(new AppError(requestError.response.data.message));
+			}
+
+			return Promise.reject(
+				new AppError('Erro no servidor. Tente novamente mais tarde.')
+			);
 		}
+	);
 
-		return Promise.reject(
-			new AppError('Erro no servidor. Tente novamente mais tarde.')
-		);
-	}
-);
+	return () => {
+		api.interceptors.response.eject(interceptTokenManager);
+
+		signOut();
+	};
+};

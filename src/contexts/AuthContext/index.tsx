@@ -38,13 +38,19 @@ export const AuthContextProvider: IComponentWithChildren = ({ children }) => {
 		setUser(userData);
 	};
 
-	const storageUseAndTokenSave = async (userData: IUserDTO, token?: string) => {
+	const storageUseAndTokenSave = async (
+		userData: IUserDTO,
+		token?: string,
+		refreshToken?: string
+	) => {
 		try {
 			setIsLoadingStorageData(true);
 
 			await StorageUser.storageUserSave(userData);
 
-			if (token) await StorageToken.storageTokenSave(token);
+			if (token && refreshToken) {
+				await StorageToken.storageTokenSave(token, refreshToken);
+			}
 		} catch (e) {
 			throw e;
 		} finally {
@@ -54,14 +60,11 @@ export const AuthContextProvider: IComponentWithChildren = ({ children }) => {
 
 	const signIn: signInFn = async (body) => {
 		try {
-			const { data } = await api.post<{ user: IUserDTO; token: string }>(
-				'/sessions',
-				body
-			);
+			const { data } = await api.post('/sessions', body);
 
-			if (!data.user || !data.token) return;
+			if (!data.user || !data.token || !data.refresh_token) return;
 
-			await storageUseAndTokenSave(data.user, data.token);
+			await storageUseAndTokenSave(data.user, data.token, data.refresh_token);
 
 			userAndTokenUpdate(data.user, data.token);
 		} catch (e) {
@@ -99,9 +102,9 @@ export const AuthContextProvider: IComponentWithChildren = ({ children }) => {
 			setIsLoadingStorageData(true);
 
 			const userLogged = await StorageUser.storageUserGet();
-			const token = await StorageToken.storageTokenGet();
+			const tokens = await StorageToken.storageTokenGet();
 
-			if (token && userLogged) userAndTokenUpdate(userLogged, token);
+			if (tokens && userLogged) userAndTokenUpdate(userLogged, tokens.token);
 		} catch (e) {
 			throw e;
 		} finally {
@@ -111,6 +114,14 @@ export const AuthContextProvider: IComponentWithChildren = ({ children }) => {
 
 	React.useEffect(() => {
 		loadUserData();
+	}, []);
+
+	React.useEffect(() => {
+		const subscribe = api.registerInterceptTokenManager(signOut);
+
+		return () => {
+			subscribe();
+		};
 	}, []);
 
 	return (
